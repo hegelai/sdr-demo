@@ -1,15 +1,15 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from openai import OpenAI
+import openai
+import prompttools.logger
 from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*", "allow_headers": ["Content-Type", "Authorization"]}})
 
 model = "gpt-3.5-turbo"
-client = OpenAI()
 
 @app.route('/feedback', methods=['POST'])
 def feedback():
@@ -48,7 +48,7 @@ def call_openai_gpt4(prospect_data, offer_description):
         {"role": "user", "content": user_prompt},
     ]
     
-    completion = client.chat.completions.create(
+    completion = openai.chat.completions.create(
         model=model,
         messages=messages,
     )

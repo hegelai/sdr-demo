@@ -1,13 +1,28 @@
 from flask import Flask, request, jsonify
-import openai
+from flask_cors import CORS
+from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*", "allow_headers": ["Content-Type", "Authorization"]}})
 
-# Replace with your GPT-4 model name, e.g., "gpt-4.0-turbo"
-model = "gpt-4.0-turbo"
+model = "gpt-3.5-turbo"
+client = OpenAI()
+
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    data = request.json
+    email_id = data.get('emailId')
+    user_feedback = data.get('feedback')
+
+    if not email_id or not user_feedback:
+        return jsonify({"error": "Missing email ID or feedback"}), 400
+
+    print(f"Feedback for email {email_id}: {user_feedback}")
+
+    return jsonify({"message": "Feedback received"}), 200
 
 @app.route('/generate-email', methods=['POST'])
 def generate_email():
@@ -32,14 +47,13 @@ def call_openai_gpt4(prospect_data, offer_description):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-
-    response = openai.chat.completions.create(
+    
+    completion = client.chat.completions.create(
         model=model,
         messages=messages,
-        temperature=0.7,
     )
 
-    return response.choices[0].message['content']
+    return completion.choices[0].message.content
 
 if __name__ == '__main__':
     app.run(debug=True)

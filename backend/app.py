@@ -1,4 +1,3 @@
-import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import openai
@@ -21,7 +20,6 @@ def feedback():
     if not log_id or not user_feedback:
         return jsonify({"error": "Missing log ID or feedback"}), 400
 
-    # Work in progress
     prompttools.logger.add_feedback(log_id, 'user_feedback', user_feedback)
 
     return jsonify({"message": "Feedback received"}), 200

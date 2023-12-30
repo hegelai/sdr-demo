@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 
 export const Form = () => {
     const [prospectData, setProspectData] = useState({});
@@ -9,8 +8,8 @@ export const Form = () => {
     const [offerDescription, setOfferDescription] = useState('');
     const [emailResponse, setEmailResponse] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [emailId, setEmailId] = useState('');
     const [showToast, setShowToast] = useState(false);
+    const [logId, setLogId] = useState('');
 
     const handleAddField = () => {
         if (currentKey && currentValue) {
@@ -34,19 +33,23 @@ export const Form = () => {
     };
 
     const handleFeedback = async (feedback: any) => {
+        if (!logId) {
+            console.error('Log ID is not set. Cannot send feedback.');
+            return;
+        }
         try {
             await axios.post('http://127.0.0.1:5001/feedback', {
-                emailId,
-                feedback
+                log_id: logId,
+                feedback: feedback
             });
-        } catch (error) {}
+        } catch (error) {
+            console.error('Error sending feedback:', error);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        const newEmailId = uuidv4(); // Generate a new UUID for this email
-        setEmailId(newEmailId);
 
         try {
             const response = await axios.post('http://127.0.0.1:5001/generate-email', {
@@ -54,6 +57,7 @@ export const Form = () => {
                 offerDescription
             });
             setEmailResponse(response.data.email);
+            setLogId(response.data.log_id)
         } catch (error) {
             console.error('Error:', error);
             setEmailResponse('Failed to generate email.');

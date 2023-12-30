@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import openai
@@ -14,14 +15,14 @@ model = "gpt-3.5-turbo"
 @app.route('/feedback', methods=['POST'])
 def feedback():
     data = request.json
-    email_id = data.get('emailId')
+    log_id = data.get('log_id')
     user_feedback = data.get('feedback')
 
-    if not email_id or not user_feedback:
-        return jsonify({"error": "Missing email ID or feedback"}), 400
+    if not log_id or not user_feedback:
+        return jsonify({"error": "Missing log ID or feedback"}), 400
 
     # Work in progress
-    print(f"Feedback for email {email_id}: {user_feedback}")
+    prompttools.logger.add_feedback(log_id, 'user_feedback', user_feedback)
 
     return jsonify({"message": "Feedback received"}), 200
 
@@ -35,8 +36,8 @@ def generate_email():
         return jsonify({"error": "Missing prospect data or offer description"}), 400
 
     try:
-        email_content = call_openai_gpt4(prospect_data, offer_description)
-        return jsonify({"email": email_content})
+        email_content, log_id = call_openai_gpt4(prospect_data, offer_description)
+        return jsonify({"email": email_content, "log_id": log_id})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -48,13 +49,13 @@ def call_openai_gpt4(prospect_data, offer_description):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    
+
     completion = openai.chat.completions.create(
         model=model,
         messages=messages,
     )
 
-    return completion.choices[0].message.content
+    return completion.choices[0].message.content, completion.log_id
 
 if __name__ == '__main__':
     app.run(debug=True)

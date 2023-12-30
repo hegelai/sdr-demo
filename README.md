@@ -14,6 +14,8 @@ At the bottom of the generated email, users can provide a thumbs up or thumbs do
 
 ![image](images/feedback.png)
 
+Logs will be visible at https://app.hegel-ai.com/logs.
+
 ## Getting started
 
 You can kick off the frontend by running `npm start` from the `frontend` directory. The app should start running on `http://localhost:3000`.

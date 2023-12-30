@@ -20,6 +20,7 @@ def feedback():
     if not email_id or not user_feedback:
         return jsonify({"error": "Missing email ID or feedback"}), 400
 
+    # Work in progress
     print(f"Feedback for email {email_id}: {user_feedback}")
 
     return jsonify({"message": "Feedback received"}), 200

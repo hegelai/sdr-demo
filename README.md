@@ -22,7 +22,7 @@ Logs will be visible at https://app.hegel-ai.com/logs.
 
 You can kick off the frontend by running `npm start` from the `frontend` directory. The app should start running on `http://localhost:3000`.
 
-### Node.js Backend
+### TypeScript Node.js Backend
 To kick off the backend, you must set your `HEGELAI_API_KEY` and `OPENAI_API_KEY`. If you need a Hegel AI API key, you can sign up [here](https://app.hegel-ai.com). Then, you can run `npm i; npx ts-node app.ts` from the `node/` subdirectory to start the backend on `http://127.0.0.1:5000`.
 
 

@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import { getOpenAIClient, addFeedback } from '@hegel-ai/hegeljs';
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
 
@@ -12,7 +11,7 @@ app.use(express.json());
 
 const model = "gpt-3.5-turbo";
 
-const openai = getOpenAIClient();
+const openai = new OpenAI()
 
 app.post('/feedback', (req, res) => {
     const data = req.body;

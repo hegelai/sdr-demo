@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { getOpenAIClient } from '@hegel-ai/hegeljs';
+import { getOpenAIClient, addFeedback } from '@hegel-ai/hegeljs';
 import dotenv from 'dotenv';
 
 dotenv.config();

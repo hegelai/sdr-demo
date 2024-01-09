@@ -37,7 +37,7 @@ export const Form = () => {
             return;
         }
         try {
-            await axios.post('http://127.0.0.1:3002/feedback', {
+            await axios.post('http://127.0.0.1:5000/feedback', {
                 log_id: logId,
                 feedback: feedback
             });
@@ -51,7 +51,7 @@ export const Form = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('http://127.0.0.1:3002/generate-email', {
+            const response = await axios.post('http://127.0.0.1:5000/generate-email', {
                 prospectData,
                 offerDescription
             });

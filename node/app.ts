@@ -61,7 +61,7 @@ async function callOpenAIGPT4(prospectData: string, offerDescription: string) {
     return { emailContent: completion.choices[0].message.content, logId: completion.log_id };
 }
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
